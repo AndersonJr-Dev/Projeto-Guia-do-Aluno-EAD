@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subjects  Subject[]
+  reminders Reminder[]
+  grades    Grade[]
+}
+
+model Subject {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  grades   Grade[]
+  reminders Reminder[]
+}
+
+model Reminder {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  date        DateTime
+  completed   Boolean  @default(false)
+  userId      String
+  subjectId   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject Subject? @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+}
+
+model Grade {
+  id        String   @id @default(uuid())
+  name      String
+  value     Float
+  weight    Float    @default(1.0)
+  userId    String
+  subjectId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userId    String
+  content   String
+  isUser    Boolean  @default(true)
+  createdAt DateTime @default(now())
+} 

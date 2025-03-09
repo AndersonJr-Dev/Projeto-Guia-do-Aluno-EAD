@@ -1,0 +1,26 @@
+{
+  "name": "guia-aluno-ead-backend",
+  "version": "1.0.0",
+  "description": "Backend para o sistema Guia do Aluno EAD",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "openai": "^4.20.1",
+    "@prisma/client": "^5.6.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "prisma": "^5.6.0"
+  }
+}

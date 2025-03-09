@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guia do Aluno EAD - Preview</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Roboto", sans-serif;
+      }
+
+      body {
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 240px;
+        background-color: #fff;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        height: 100vh;
+        overflow-y: auto;
+      }
+
+      .sidebar-header {
+        padding: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .sidebar-menu {
+        list-style: none;
+        padding: 0;
+      }
+
+      .sidebar-menu li {
+        padding: 0;
+      }
+
+      .sidebar-menu a {
+        display: flex;
+        align-items: center;
+        padding: 16px;
+        color: #333;
+        text-decoration: none;
+        transition: background-color 0.3s;
+      }
+
+      .sidebar-menu a:hover {
+        background-color: #f0f0f0;
+      }
+
+      .sidebar-menu a.active {
+        background-color: #e3f2fd;
+        color: #3f51b5;
+      }
+
+      .sidebar-menu .icon {
+        margin-right: 16px;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .main-content {
+        flex: 1;
+        margin-left: 240px;
+        padding: 24px;
+      }
+
+      .header {
+        background-color: #3f51b5;
+        color: white;
+        padding: 16px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-title {
+        font-size: 1.25rem;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+      }
+
+      .user-name {
+        margin-right: 16px;
+      }
+
+      .logout-btn {
+        background-color: transparent;
+        border: 1px solid white;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .logout-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .page-title {
+        margin-bottom: 24px;
+      }
+
+      .dashboard-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 24px;
+      }
+
+      .card {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transition: transform 0.2s;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .card-title {
+        font-size: 1.25rem;
+        margin-bottom: 8px;
+      }
+
+      .card-value {
+        font-size: 2rem;
+        margin-bottom: 8px;
+        color: #333;
+      }
+
+      .card-text {
+        color: #666;
+        margin-bottom: 16px;
+      }
+
+      .card-button {
+        background-color: #3f51b5;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .card-button:hover {
+        background-color: #303f9f;
+      }
+
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 200px);
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+      }
+
+      .chat-messages {
+        flex: 1;
+        padding: 16px;
+        overflow-y: auto;
+        background-color: #f5f5f5;
+      }
+
+      .message {
+        display: flex;
+        margin-bottom: 16px;
+      }
+
+      .message.user {
+        justify-content: flex-end;
+      }
+
+      .message-content {
+        max-width: 75%;
+        padding: 12px;
+        border-radius: 12px;
+      }
+
+      .message.user .message-content {
+        background-color: #e3f2fd;
+      }
+
+      .message.ai .message-content {
+        background-color: white;
+      }
+
+      .message-time {
+        font-size: 0.75rem;
+        color: #666;
+        text-align: right;
+        margin-top: 4px;
+      }
+
+      .chat-input {
+        display: flex;
+        padding: 16px;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      .chat-input input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        margin-right: 8px;
+      }
+
+      .send-button {
+        background-color: #3f51b5;
+        color: white;
+        border: none;
+        padding: 0 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .send-button:hover {
+        background-color: #303f9f;
+      }
+
+      /* Login/Register Pages */
+      .auth-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 24px;
+      }
+
+      .auth-card {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 32px;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .auth-title {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+      }
+
+      .auth-button {
+        width: 100%;
+        background-color: #3f51b5;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 4px;
+        margin-top: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .auth-button:hover {
+        background-color: #303f9f;
+      }
+
+      .auth-link {
+        text-align: center;
+        margin-top: 16px;
+      }
+
+      .auth-link a {
+        color: #3f51b5;
+        text-decoration: none;
+      }
+
+      .auth-link a:hover {
+        text-decoration: underline;
+      }
+
+      /* Tabs for different views */
+      .tabs {
+        display: flex;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .tab {
+        padding: 12px 24px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .tab.active {
+        border-bottom: 2px solid #3f51b5;
+        color: #3f51b5;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Tabs para navegar entre as diferentes telas -->
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('login')">Login</div>
+      <div class="tab" onclick="showTab('register')">Registro</div>
+      <div class="tab" onclick="showTab('dashboard')">Dashboard</div>
+      <div class="tab" onclick="showTab('chat')">Chat IA</div>
+    </div>
+
+    <!-- Tela de Login -->
+    <div id="login" class="tab-content active">
+      <div class="auth-container">
+        <div class="auth-card">
+          <h1 class="auth-title">Guia do Aluno EAD</h1>
+          <h2 class="auth-title">Login</h2>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Seu email" />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" id="password" placeholder="Sua senha" />
+          </div>
+
+          <button class="auth-button" onclick="showTab('dashboard')">
+            Entrar
+          </button>
+
+          <div class="auth-link">
+            <a href="#" onclick="showTab('register')"
+              >Não tem uma conta? Cadastre-se</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tela de Registro -->
+    <div id="register" class="tab-content">
+      <div class="auth-container">
+        <div class="auth-card">
+          <h1 class="auth-title">Guia do Aluno EAD</h1>
+          <h2 class="auth-title">Cadastro</h2>
+
+          <div class="form-group">
+            <label for="name">Nome completo</label>
+            <input type="text" id="name" placeholder="Seu nome completo" />
+          </div>
+
+          <div class="form-group">
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email" placeholder="Seu email" />
+          </div>
+
+          <div class="form-group">
+            <label for="reg-password">Senha</label>
+            <input type="password" id="reg-password" placeholder="Sua senha" />
+          </div>
+
+          <div class="form-group">
+            <label for="confirm-password">Confirmar senha</label>
+            <input
+              type="password"
+              id="confirm-password"
+              placeholder="Confirme sua senha"
+            />
+          </div>
+
+          <button class="auth-button" onclick="showTab('dashboard')">
+            Cadastrar
+          </button>
+
+          <div class="auth-link">
+            <a href="#" onclick="showTab('login')"
+              >Já tem uma conta? Faça login</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tela de Dashboard -->
+    <div id="dashboard" class="tab-content">
+      <div class="container">
+        <div class="sidebar">
+          <div class="sidebar-header">
+            <h2>Guia do Aluno EAD</h2>
+          </div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="#" class="active"
+                ><span class="icon">📊</span> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#"><span class="icon">📚</span> Matérias</a>
+            </li>
+            <li>
+              <a href="#"><span class="icon">⏰</span> Lembretes</a>
+            </li>
+            <li>
+              <a href="#"><span class="icon">📝</span> Notas</a>
+            </li>
+            <li>
+              <a href="#" onclick="showTab('chat')"
+                ><span class="icon">💬</span> Chat IA</a
+              >
+            </li>
+            <li>
+              <a href="#" onclick="showTab('login')"
+                ><span class="icon">🚪</span> Sair</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div class="main-content">
+          <div class="header">
+            <div class="header-title">Dashboard</div>
+            <div class="user-info">
+              <div class="user-name">Olá, Usuário</div>
+              <button class="logout-btn" onclick="showTab('login')">
+                Sair
+              </button>
+            </div>
+          </div>
+
+          <h1 class="page-title">Dashboard</h1>
+          <p>
+            Bem-vindo ao seu painel de controle. Aqui você pode visualizar um
+            resumo das suas atividades acadêmicas.
+          </p>
+
+          <div class="dashboard-cards">
+            <div class="card">
+              <div class="card-icon">📚</div>
+              <h2 class="card-title">Matérias</h2>
+              <div class="card-value">5</div>
+              <p class="card-text">5 matéria(s) cadastrada(s)</p>
+              <button class="card-button">Gerenciar Matérias</button>
+            </div>
+
+            <div class="card">
+              <div class="card-icon">⏰</div>
+              <h2 class="card-title">Lembretes</h2>
+              <div class="card-value">8</div>
+              <p class="card-text">3 lembrete(s) pendente(s)</p>
+              <button class="card-button">Ver Lembretes</button>
+            </div>
+
+            <div class="card">
+              <div class="card-icon">📝</div>
+              <h2 class="card-title">Notas</h2>
+              <div class="card-value">7.8</div>
+              <p class="card-text">Média geral: 7.8</p>
+              <button class="card-button">Gerenciar Notas</button>
+            </div>
+
+            <div class="card">
+              <div class="card-icon">💬</div>
+              <h2 class="card-title">Assistente IA</h2>
+              <p class="card-text">Tire suas dúvidas com a IA</p>
+              <button class="card-button" onclick="showTab('chat')">
+                Conversar com IA
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tela de Chat -->
+    <div id="chat" class="tab-content">
+      <div class="container">
+        <div class="sidebar">
+          <div class="sidebar-header">
+            <h2>Guia do Aluno EAD</h2>
+          </div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="#" onclick="showTab('dashboard')"
+                ><span class="icon">📊</span> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#"><span class="icon">📚</span> Matérias</a>
+            </li>
+            <li>
+              <a href="#"><span class="icon">⏰</span> Lembretes</a>
+            </li>
+            <li>
+              <a href="#"><span class="icon">📝</span> Notas</a>
+            </li>
+            <li>
+              <a href="#" class="active"
+                ><span class="icon">💬</span> Chat IA</a
+              >
+            </li>
+            <li>
+              <a href="#" onclick="showTab('login')"
+                ><span class="icon">🚪</span> Sair</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div class="main-content">
+          <div class="header">
+            <div class="header-title">Assistente IA</div>
+            <div class="user-info">
+              <div class="user-name">Olá, Usuário</div>
+              <button class="logout-btn" onclick="showTab('login')">
+                Sair
+              </button>
+            </div>
+          </div>
+
+          <h1 class="page-title">Assistente IA</h1>
+          <p>
+            Converse com nossa IA para tirar dúvidas sobre suas matérias,
+            organizar seus estudos ou obter ajuda com conteúdos acadêmicos.
+          </p>
+
+          <div class="chat-container">
+            <div class="chat-messages">
+              <div class="message ai">
+                <div class="message-content">
+                  <p>
+                    Olá! Sou o assistente do Guia do Aluno EAD. Como posso
+                    ajudar você hoje?
+                  </p>
+                  <div class="message-time">10:00</div>
+                </div>
+              </div>
+
+              <div class="message user">
+                <div class="message-content">
+                  <p>
+                    Olá! Preciso de ajuda para organizar meus estudos de Cálculo
+                    I.
+                  </p>
+                  <div class="message-time">10:01</div>
+                </div>
+              </div>
+
+              <div class="message ai">
+                <div class="message-content">
+                  <p>
+                    Claro! Para Cálculo I, recomendo dividir seus estudos em
+                    tópicos principais: limites, derivadas e integrais. Comece
+                    com limites, pois é a base para os outros conceitos. Dedique
+                    pelo menos 2 horas por dia para praticar exercícios. Você já
+                    tem um livro-texto para a disciplina?
+                  </p>
+                  <div class="message-time">10:02</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-input">
+              <input type="text" placeholder="Digite sua mensagem..." />
+              <button class="send-button">Enviar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showTab(tabId) {
+        // Esconder todos os conteúdos
+        document.querySelectorAll(".tab-content").forEach((content) => {
+          content.classList.remove("active");
+        });
+
+        // Desativar todas as abas
+        document.querySelectorAll(".tab").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+
+        // Mostrar o conteúdo selecionado
+        document.getElementById(tabId).classList.add("active");
+
+        // Ativar a aba correspondente
+        document.querySelectorAll(".tab").forEach((tab) => {
+          if (tab.textContent.toLowerCase().includes(tabId.toLowerCase())) {
+            tab.classList.add("active");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
