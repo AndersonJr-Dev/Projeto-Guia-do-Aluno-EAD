@@ -222,6 +222,6 @@ Este projeto está licenciado sob a [Licença MIT](LICENSE).
 
 ## Contato
 
-Anderson Assumpção Junior - [seu-email@exemplo.com]
+Anderson Assumpção Junior - [juniorgn7dev@gmail.com]
 
-Link do Projeto: [https://github.com/seu-usuario/projeto-guia-do-aluno-ead](https://github.com/seu-usuario/projeto-guia-do-aluno-ead)
+Link do Projeto: [https://github.com/AndersonJr-Dev/projeto-guia-do-aluno-ead](https://github.com/AndersonJr-Dev/projeto-guia-do-aluno-ead)
